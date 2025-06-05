@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const BASE_BACKEND_URL = "https://dev.cordestitch.com";
+const BASE_BACKEND_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://dev.cordestitch.com";
 
 // GET Request
 export const fetchData = async <T>(
@@ -8,7 +8,14 @@ export const fetchData = async <T>(
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response = await axios.get(`${BASE_BACKEND_URL}${endpoint}`, config);
+    const response = await axios.get(`${BASE_BACKEND_URL}${endpoint}`, {
+      ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        'Content-Type': 'application/json',
+      }
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -22,7 +29,14 @@ export const submitData = async <T>(
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response = await axios.post(`${BASE_BACKEND_URL}${endpoint}`, payload, config);
+    const response = await axios.post(`${BASE_BACKEND_URL}${endpoint}`, payload, {
+      ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        'Content-Type': 'application/json',
+      }
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -36,7 +50,14 @@ export const updateData = async <T>(
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
-    const response = await axios.put(`${BASE_BACKEND_URL}${endpoint}`, payload, config);
+    const response = await axios.put(`${BASE_BACKEND_URL}${endpoint}`, payload, {
+      ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        'Content-Type': 'application/json',
+      }
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -52,6 +73,11 @@ export const removeData = async <T>(
   try {
     const response = await axios.delete(`${BASE_BACKEND_URL}${endpoint}`, {
       ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        'Content-Type': 'application/json',
+      },
       data: payload,
     });
     return response.data;
@@ -69,9 +95,9 @@ export const uploadFormData = async <T>(
   try {
     const updatedConfig: AxiosRequestConfig = {
       ...config,
+      withCredentials: true,
       headers: {
         ...config?.headers,
-        // 'Content-Type': 'multipart/form-data', // Optional
       },
     };
 

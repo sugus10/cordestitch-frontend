@@ -7,12 +7,13 @@ import {
 import { store } from "@/components/redux/store";
 import { logout } from "@/components/redux/auth/authSlice";
 
-
-const BASE_URL = "https://dev.cordestitch.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://dev.cordestitch.com";
 
 const http = axios.create({
   baseURL: BASE_URL,
-  headers: { "Content-Type": "application/json" },
+  headers: { 
+    "Content-Type": "application/json",
+  },
   withCredentials: true,
 });
 
